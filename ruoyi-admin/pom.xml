@@ -68,6 +68,12 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!--微众业务模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-weibank</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

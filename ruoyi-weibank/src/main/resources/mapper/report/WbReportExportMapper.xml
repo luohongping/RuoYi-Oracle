@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.weibank.mapper.WbReportExportMapper">
+
+    <resultMap type="WbReportExport" id="WbReportExportResult">
+        <result property="expId"    column="exp_id"    />
+        <result property="reportType"    column="report_type"    />
+        <result property="reportName"    column="report_name"    />
+        <result property="app"    column="app"    />
+        <result property="uniqueId"    column="unique_id"    />
+        <result property="reportParams"    column="report_params"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="zip"    column="zip"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="reason"    column="reason"    />
+        <result property="nextExecTime"    column="next_exec_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="execCount"    column="exec_count"    />
+        <result property="reportSize"    column="report_size"    />
+    </resultMap>
+
+    <sql id="selectWbReportExportVo">
+        select exp_id, report_type, report_name, app, unique_id, report_params, file_type, zip, status, create_time, create_user, create_user_name, reason, next_exec_time, end_time, exec_count, report_size from wb_report_export
+    </sql>
+
+    <select id="selectWbReportExportList" parameterType="WbReportExport" resultMap="WbReportExportResult">
+        <include refid="selectWbReportExportVo"/>
+        <where>
+            <if test="reportType != null  and reportType != ''"> and report_type = #{reportType}</if>
+            <if test="reportName != null  and reportName != ''"> and report_name like concat(concat('%', #{reportName}), '%')</if>
+            <if test="app != null  and app != ''"> and app = #{app}</if>
+            <if test="uniqueId != null  and uniqueId != ''"> and unique_id = #{uniqueId}</if>
+            <if test="reportParams != null  and reportParams != ''"> and report_params = #{reportParams}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+            <if test="zip != null  and zip != ''"> and zip = #{zip}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+
+            <if test="params.startTime != null and params.startTime != ''">
+                and to_char(create_time,'yyyy-mm-dd') >= #{params.startTime}
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and to_char(create_time,'yyyy-mm-dd') <![CDATA[ <= ]]> #{params.endTime}
+            </if>
+            <if test="createUser != null  and createUser != ''"> and create_user = #{createUser}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat(concat('%', #{createUserName}), '%')</if>
+            <if test="reason != null  and reason != ''"> and reason = #{reason}</if>
+            <if test="nextExecTime != null "> and next_exec_time = #{nextExecTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="execCount != null "> and exec_count = #{execCount}</if>
+            <if test="reportSize != null "> and report_size = #{reportSize}</if>
+        </where>
+    </select>
+
+    <select id="selectWbReportExportByExpId" parameterType="String" resultMap="WbReportExportResult">
+        <include refid="selectWbReportExportVo"/>
+        where exp_id = #{expId}
+    </select>
+
+    <insert id="insertWbReportExport" parameterType="WbReportExport">
+        insert into wb_report_export
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="expId != null">exp_id,</if>
+            <if test="reportType != null and reportType != ''">report_type,</if>
+            <if test="reportName != null">report_name,</if>
+            <if test="app != null">app,</if>
+            <if test="uniqueId != null">unique_id,</if>
+            <if test="reportParams != null">report_params,</if>
+            <if test="fileType != null">file_type,</if>
+            <if test="zip != null">zip,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="reason != null">reason,</if>
+            <if test="nextExecTime != null">next_exec_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="execCount != null">exec_count,</if>
+            <if test="reportSize != null">report_size,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="expId != null">#{expId},</if>
+            <if test="reportType != null and reportType != ''">#{reportType},</if>
+            <if test="reportName != null">#{reportName},</if>
+            <if test="app != null">#{app},</if>
+            <if test="uniqueId != null">#{uniqueId},</if>
+            <if test="reportParams != null">#{reportParams},</if>
+            <if test="fileType != null">#{fileType},</if>
+            <if test="zip != null">#{zip},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="reason != null">#{reason},</if>
+            <if test="nextExecTime != null">#{nextExecTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="execCount != null">#{execCount},</if>
+            <if test="reportSize != null">#{reportSize},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWbReportExport" parameterType="WbReportExport">
+        update wb_report_export
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportType != null and reportType != ''">report_type = #{reportType},</if>
+            <if test="reportName != null">report_name = #{reportName},</if>
+            <if test="app != null">app = #{app},</if>
+            <if test="uniqueId != null">unique_id = #{uniqueId},</if>
+            <if test="reportParams != null">report_params = #{reportParams},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+            <if test="zip != null">zip = #{zip},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="nextExecTime != null">next_exec_time = #{nextExecTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="execCount != null">exec_count = #{execCount},</if>
+            <if test="reportSize != null">report_size = #{reportSize},</if>
+        </trim>
+        where exp_id = #{expId}
+    </update>
+
+    <delete id="deleteWbReportExportByExpId" parameterType="String">
+        delete from wb_report_export where exp_id = #{expId}
+    </delete>
+
+    <delete id="deleteWbReportExportByExpIds" parameterType="String">
+        delete from wb_report_export where exp_id in
+        <foreach item="expId" collection="array" open="(" separator="," close=")">
+            #{expId}
+        </foreach>
+    </delete>
+
+
+    <select id="getOne" resultMap="WbReportExportResult">
+        select * from (
+        <include refid="selectWbReportExportVo"/>
+        where status ='N' and next_exec_time &lt; SYSDATE
+        and report_type in (<foreach collection="types" item="type" separator=",">#{type}</foreach>)
+        order by next_exec_time
+        )
+        where rownum = 1
+    </select>
+
+    <update id="start">
+        update wb_report_export set status ='P' where exp_id=#{expId}
+    </update>
+
+    <delete id="clearFile">
+        delete from wb_report_export_file where `report_id`=#{reportId}
+    </delete>
+
+    <insert id="insertFile">
+        insert into wb_report_export_file(id, report_id, seq, create_time, file_size, file_data)
+        values(#{file.id}, #{file.reportId}, #{file.seq}, #{file.createTime},  #{file.fileSize}, #{file.fileData})
+    </insert>
+
+    <update id="end">
+        update wb_report_export set
+        status='S',exec_count=ifnull(`exec_count`,  0) + 1,end_time=sysdate,reason='执行成功'
+        ,zip=#{zip},file_type=#{fileType},report_size=#{length}
+        where exp_id=#{expId}
+    </update>
+
+    <update id="status">
+        update wb_report_export
+        <set>
+            status=#{status}, exec_count=ifnull(`exec_count`,  0) + 1,end_time=sysdate,reason=#{reason}
+            <if test="time != null">
+                ,next_exec_time=#{time}
+            </if>
+        </set>
+        where exp_id=#{expId}
+    </update>
+
+</mapper>
